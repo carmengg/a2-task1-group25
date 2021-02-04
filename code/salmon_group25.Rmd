@@ -14,6 +14,7 @@ library(here)
 library(janitor)
 library(tsibble) # time series tibbles
 library(feasts)
+library(patchwork)
 ```
 
 ### Overview
@@ -48,25 +49,46 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 ### Seasonplots
 ```{r, tab 2}
 
-basic_seasonplot <- function(fish_data, fish_type){
+basic_seasonplot <- function(fish_data, fish_type_str){
   month_fish_plot <- fish_data %>% 
-    filter(fish_type == fish_type) %>%  
+    filter(fish_type == fish_type_str) %>%  
     index_by(yr_mo = ~yearmonth(.)) %>% # group by year and month
     summarize(monthly_mean_crossings = mean(n_crossing, na.rm=TRUE))  %>% 
-    gg_season(y=monthly_mean_crossings)
+    gg_season(y=monthly_mean_crossings) +
+    labs(x=" ",
+         y="average monthly passage")+
+    theme_light()
   
   return(month_fish_plot)
 }
+
+steel_season <- basic_seasonplot(fish, "steelhead")+
+  labs(title = "Steelhead Adult Passage (Jan-Dec)")+
+  theme(legend.position = "none")
+
+jack_season <- basic_seasonplot(fish, "jack") +
+  labs(title = "Jack-Coho Adult Passage (Aug-Dec)")+
+  theme(legend.position = "none")
+
+coho_season <- basic_seasonplot(fish, "coho") +
+  labs(title = "Coho Adult Passage (Aug-Dec)")+
+  theme(legend.position = "none")
+
+
+( coho_season| jack_season) / steel_season
+```
+
+### Annual counts by species
+```{r, tab 3}
+
+```
+
+```{r}
 
 fish %>% 
   filter(fish_type=="steelhead") %>% 
   index_by(yr_mo = ~yearmonth(.)) %>% # group by year and month
   summarize(monthly_mean_crossings = mean(n_crossing, na.rm=TRUE))  %>% 
   gg_season(y=monthly_mean_crossings)
-```
-
-### Annual counts by species
-```{r, tab 3}
-
 ```
 
