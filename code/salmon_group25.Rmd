@@ -24,7 +24,7 @@ library(feasts)
 
 ## Data Citation
 
-```{r, basic data set, warning=FALSE}
+```{r, basic data set, warning=FALSE, message=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
   select(date,steelhead,coho,jack_coho) %>% 
@@ -55,7 +55,17 @@ fish %>%
 ```
 
 ### Annual counts by species
-```{r, tab 3}
+```{r, tab 3, fig.align='center',fig.cap=}
+fish_annual <- fish %>% 
+  index_by(year = ~year(.)) %>% 
+  group_by(fish_type) %>% 
+  summarize(annual_count = sum(n_crossing, na.rm = TRUE))
 
+ggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+
+  geom_line()+
+  theme_light()+
+  scale_x_continuous(breaks = c(2001:2010))+
+  labs(x= "Year", y= "Annual count", title = "Annual counts of Coho, Jack Coho, and Steelhead fish", subtitle = "surveyed from 2001-2010", color= "Salmon Species")
+  
 ```
 
