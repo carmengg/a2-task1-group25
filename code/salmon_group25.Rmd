@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(here)
 library(janitor)
+library(tsibble) # time series tibbles
+library(feasts)
 ```
 
 ### Overview
@@ -26,7 +28,12 @@ library(janitor)
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
   select(date,steelhead,coho,jack_coho) %>% 
-  mutate(date = lubridate::mdy(date))
+  mutate(date = lubridate::mdy(date)) %>%     # convert to date type
+  rename(jack = jack_coho) %>%                # update column name
+  pivot_longer(cols = steelhead:jack,         # convert to tidy data
+               names_to="fish_type", 
+               values_to = "n_crossing") %>% 
+  as_tsibble(key=fish_type, index= date)           # convert date into tsibble
 ```
 
 
@@ -41,6 +48,10 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 ### Seasonplots
 ```{r, tab 2}
 
+
+
+fish %>% 
+  gg_season(y=steelhead) # plot temp everyday per year
 ```
 
 ### Annual counts by species
