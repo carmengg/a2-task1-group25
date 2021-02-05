@@ -82,10 +82,18 @@ steel_season / (coho_season| jack_season) +
 
 **Figure 2.** 
 Average weekly count of three groups of salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
-Graph 1 shows the average weekly passage by year of steelhead salmon (*oncorhynchus mykiss*).
+Graph 1 shows the average weekly passage by year of adult steelhead salmon (*oncorhynchus mykiss*).
 Graphs 2 and 3 show respectively the average weekly passage by year of adult and jack coho salmon (*oncorhynchus kisutch*).  
 Data: Columbia River Dart.
 
+**Trends:**
+
+- For adult steelhead salmons we can observe clear seasonaility of the weekly average passage in every year. 
+The  average count increases from December to May/June, then decreases until August/September and remains in less than 100 average crossings from until December.
+
+- Both groups of coho salmons have the same seasonality in weekly average passage. Coho salmons seem to only use the fish ladder from Aug to December, with crossings increasing from August and peaking in September. 
+
+- Average weekly crossings of adult coho salmons have increased from 2001 to 2010, while passage of adult steelhead has decreased in the same period. 
 
 ### Annual counts by species
 ```{r, tab 3}
