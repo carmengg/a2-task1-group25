@@ -38,7 +38,7 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 ```
 
 
-## Willametter Falls fish passage {.tabset}
+## Willamette Falls fish passage {.tabset}
 
 
 ### Original time series
@@ -64,13 +64,13 @@ basic_seasonplot <- function(fish_data, fish_type_str){
 }
 
 steel_season <- basic_seasonplot(fish, "steelhead")+
-  labs(title = "Graph 1. Steelhead Adult Passage")
+  labs(title = "Graph 1. Adult Steelhead  Passage")
 
 coho_season <- basic_seasonplot(fish, "coho") +
-  labs(title = "Graph 2. \nCoho Adult Passage")
+  labs(title = "Graph 2. \nAdult Coho Passage")
 
 jack_season <- basic_seasonplot(fish, "jack") +
-  labs(title = "Graph 3. \nJack Coho Adult Passage")+
+  labs(title = "Graph 3. \nJack Coho Passage")+
   labs(y="")
 
 
@@ -83,17 +83,17 @@ steel_season / (coho_season| jack_season) +
 **Figure 2.** 
 Average weekly count of three groups of salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
 Graph 1 shows the average weekly passage by year of adult steelhead salmon (*oncorhynchus mykiss*).
-Graphs 2 and 3 show respectively the average weekly passage by year of adult and jack coho salmon (*oncorhynchus kisutch*).  
+Graphs 2 and 3 show, respectively, the average weekly passage by year of adult and jack coho salmon (*oncorhynchus kisutch*).  
 Data: Columbia River Dart.
 
 **Trends:**
 
-- For adult steelhead salmons we can observe clear seasonaility of the weekly average passage in every year. 
-The  average count increases from December to May/June, then decreases until August/September and remains in less than 100 average crossings from until December.
+- For adult steelhead salmon we can observe clear seasonaility of the weekly average passage. 
+The  average count increases from December to May/June, then decreases until August/September and remains in less than 100 average crossings until December.
 
-- Both groups of coho salmons have the same seasonality in weekly average passage. Coho salmons seem to only use the fish ladder from Aug to December, with crossings increasing from August and peaking in September. 
+- Both groups of coho salmon have the same seasonality in weekly average passage. Coho salmon seem to only use the fish ladder from August to December regardless of life stage, with crossings increasing from August and peaking in September. 
 
-- Average weekly crossings of adult coho salmons have increased from 2001 to 2010, while passage of adult steelhead has decreased in the same period. 
+- Average weekly crossings of adult coho salmon have increased from 2001 to 2010, while passage of adult steelhead salmon has decreased in the same period. 
 
 ### Annual counts by species
 ```{r, tab 3}
