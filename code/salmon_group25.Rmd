@@ -50,6 +50,10 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 ```{r, tab 2}
 
 basic_seasonplot <- function(fish_data, fish_type_str){
+  # 
+  # if(flag==TRUE){
+  #   filter(7< month(date))
+  # }
   month_fish_plot <- fish_data %>% 
     filter(fish_type == fish_type_str) %>%  
     index_by(yr_mo = ~yearmonth(.)) %>% # group by year and month
