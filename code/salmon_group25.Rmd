@@ -70,6 +70,7 @@ ggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+
   labs(x= "Year", y= "Annual count", title = "Annual counts of Coho, Jack Coho, and Steelhead fish", subtitle = "surveyed from 2001-2010")
   
 ```
+
 **Trends:** 
 - Steelhead salmon counts are the highest among the three salmon groups observed. Steelhead decrease in 2003 and 2005, but increase in 2004 and again in 2010 after having relatively constant annual counts from 2005-2009. 
 - Jack Coho have the lowest counts among the three groups.
