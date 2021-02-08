@@ -6,8 +6,6 @@ output:
   html_document:
     code_folding: hide
     theme: lumen
-
-
 ---
 
 ```{r setup, include=FALSE}
@@ -30,8 +28,7 @@ library(patchwork)
 
 ## Data Citation
 
-
-```{r, basic data set, warning=FALSE, message=FALSE}
+```{r, basic data set, warning=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
   select(date,steelhead,coho,jack_coho) %>% 
@@ -44,12 +41,12 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 
 ```
 
-## Willamette Falls fish passage {.tabset}
+
+## Willametter Falls fish passage {.tabset}
 
 
 ### Original time series
 ```{r, tab 1}
-
 fish_time <- fish %>% 
   mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
   group_by(fish_type)
@@ -64,6 +61,7 @@ ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
         ylab("Counts of Adult Salmon Passage") 
 
 ```
+
 
 ### Seasonplots
 ```{r, tab 2, out.width="100%", warning=FALSE}

@@ -199,9 +199,28 @@ summary {
                names_to=&quot;fish_type&quot;, 
                values_to = &quot;n_crossing&quot;) %&gt;% 
   as_tsibble(key=fish_type, index= date)   # convert date into tsibble</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Project = col_character(),
+##   Date = col_character(),
+##   `Chinook Run` = col_logical(),
+##   Chinook = col_double(),
+##   `Jack Chinook` = col_double(),
+##   Steelhead = col_double(),
+##   `Wild Steelhead` = col_logical(),
+##   Sockeye = col_logical(),
+##   Coho = col_double(),
+##   `Jack Coho` = col_double(),
+##   Shad = col_logical(),
+##   Lamprey = col_logical(),
+##   `Bull Trout` = col_logical(),
+##   Chum = col_logical(),
+##   Pink = col_logical(),
+##   TempC = col_double()
+## )</code></pre>
 </div>
-<div id="willamette-falls-fish-passage" class="section level2 tabset">
-<h2 class="tabset">Willamette Falls fish passage</h2>
+<div id="willametter-falls-fish-passage" class="section level2 tabset">
+<h2 class="tabset">Willametter Falls fish passage</h2>
 <div id="original-time-series" class="section level3">
 <h3>Original time series</h3>
 <pre class="r"><code>fish_time &lt;- fish %&gt;% 
