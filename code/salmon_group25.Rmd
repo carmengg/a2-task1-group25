@@ -1,6 +1,7 @@
 ---
 title: "salmon_group25"
 author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
+
 date: "1/29/2021"
 output: 
   html_document:
@@ -15,19 +16,28 @@ library(here)
 library(janitor)
 library(tsibble) # time series tibbles
 library(feasts)
-
 library(patchwork)
 ```
 
 ### Overview
+#### Summary
+This summary explores adult fish passage recorded from January 2001 to December 2012 at the Willamette Falls fish ladder on the Willamette River (Oregon). Data were shared by and accessed from Columbia River DART (Data Access in Real Time). 
 
-- picture
-- Summary
-- map
 
 ## Data Citation
 
-```{r, basic data set, warning=FALSE}
+Looking towards tailspar from yarder at Willamette Falls. Source: (Forest Engineering Inc., Copyright, 1996)
+![Looking towards tailspar from yarder at Willamette Falls](fish.png)
+
+Map of Willamette Falls. Source: Portland District, U.S. Army Corps of Engineers, 2021. 
+![Looking towards tailspar from yarder at Willamette Falls](map.png)
+
+## Data Citation
+
+
+## Willametter Falls fish passage {.tabset}
+
+```{r, basic data set, warning=FALSE, message=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
   select(date,steelhead,coho,jack_coho) %>% 
@@ -36,16 +46,12 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
   pivot_longer(cols = steelhead:jack,         # convert to tidy data
                names_to="fish_type", 
                values_to = "n_crossing") %>% 
-  as_tsibble(key=fish_type, index= date)   # convert date into tsibble
-
+  as_tsibble(key=fish_type, index= date)           # convert date into tsibble
 ```
 
 
-## Willametter Falls fish passage {.tabset}
-
-
 ### Original time series
-```{r, tab 1}
+```{r, tab 1, out.width="100%"}
 fish_time <- fish %>% 
   mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
   group_by(fish_type)
@@ -55,13 +61,21 @@ ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
   facet_wrap(~fish_type) +
   theme_light()+ 
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(title = "Willamette Falls Fish Passages 2002-2010") +
+  labs(title = "Willamette Falls Fish Passages 2001-2010") +
         xlab("Date") +
         ylab("Counts of Adult Salmon Passage") 
 
 ```
+**Figure 1.** 
+Yearly count of Coho, Jack and Steelhead salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
+Graph 1 shows the time series by year of adult coho salmon (*Oncorhynchus mykiss*).
+Graphs 2 and 3 show, respectively, the time series passage by year of adult and coho and steelhead salmon (*Oncorhynchus kisutch*).  
+Data: Columbia River DART.
 
+**Trends:**
 
+- Adult coho salmon have steadily increasing counts from 2009 onward. 
+- There does not seem to be an increase in yearly counts of adult coho and steelhead salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
 ### Seasonplots
 ```{r, tab 2, out.width="100%", warning=FALSE}
 
@@ -139,4 +153,3 @@ ggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+
 - Jack Coho have the lowest counts among the three groups.
 
 - Coho counts are similar to Jack Coho, but counts increase after 2008. 
-
