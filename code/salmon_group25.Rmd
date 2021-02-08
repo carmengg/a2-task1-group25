@@ -19,10 +19,16 @@ library(patchwork)
 ```
 
 ### Overview
+#### Summary
+This summary explores adult fish passage recorded from January 2001 to December 2012 at the Willamette Falls fish ladder on the Willamette River (Oregon). Data were shared by and accessed from Columbia River DART (Data Access in Real Time). 
 
-- picture
-- Summary
-- map
+
+
+Looking towards tailspar from yarder at Willamette Falls. Source: (Forest Engineering Inc., Copyright, 1996)
+![Looking towards tailspar from yarder at Willamette Falls](fish.png)
+
+Map of Willamette Falls. Source: Portland District, U.S. Army Corps of Engineers, 2021. 
+![Looking towards tailspar from yarder at Willamette Falls](map.png)
 
 ## Data Citation
 
@@ -53,16 +59,16 @@ ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
   facet_wrap(~fish_type) +
   theme_light()+ 
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(title = "Willamette Falls Fish Passages 2002-2010") +
+  labs(title = "Willamette Falls Fish Passages 2001-2010") +
         xlab("Date") +
         ylab("Counts of Adult Salmon Passage") 
 
 ```
 **Figure 1.** 
 Yearly count of Coho, Jack and Steelhead salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
-Graph 1 shows the time series by year of adult coho salmon (*oncorhynchus mykiss*).
-Graphs 2 and 3 show, respectively, the time series passage by year of adult and coho and steelhead salmon (*oncorhynchus kisutch*).  
-Data: Columbia River Dart.
+Graph 1 shows the time series by year of adult coho salmon (*Oncorhynchus mykiss*).
+Graphs 2 and 3 show, respectively, the time series passage by year of adult and coho and steelhead salmon (*Oncorhynchus kisutch*).  
+Data: Columbia River DART.
 
 **Trends:**
 
