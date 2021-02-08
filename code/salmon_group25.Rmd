@@ -25,7 +25,7 @@ library(patchwork)
 
 ## Data Citation
 
-```{r, basic data set, warning=FALSE}
+```{r, basic data set, warning=FALSE, message=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
   select(date,steelhead,coho,jack_coho) %>% 
@@ -96,8 +96,24 @@ The  average count increases from December to May/June, then decreases until Aug
 - Average weekly crossings of adult coho salmon have increased from 2001 to 2010, while passage of adult steelhead salmon has decreased in the same period. 
 
 ### Annual counts by species
-```{r, tab 3}
+```{r, tab 3, fig.align='center',fig.cap= "**Figure 3**. Annual count of Steelhead, Jack coho, and coho salmon passing passing through Willamette Falls fish ladder from 2001 to 2010. Steelhead salmon, *oncorhynchus mykiss*, are shown to have the highest annual counts (blue line).The adult Coho and Jack Coho salmon, *oncorhynchus kisutch*, (red and green line respectively) have lower annual counts than Steelhead, but the adult Coho increase after 2008. Data: Columbia River Dart."}
+fish_annual <- fish %>% 
+  index_by(year = ~year(.)) %>% 
+  group_by(fish_type) %>% 
+  summarize(annual_count = sum(n_crossing, na.rm = TRUE))
 
+ggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+
+  geom_line()+
+  theme_light()+
+  scale_x_continuous(breaks = c(2001:2010))+
+  scale_color_hue(name = "Salmon Species", labels = c("Coho", "Jack Coho", "Steelhead"))+
+  guides(color = guide_legend(reverse = T))+
+  labs(x= "Year", y= "Annual count", title = "Annual counts of Coho, Jack Coho, and Steelhead fish", subtitle = "surveyed from 2001-2010")
+  
 ```
 
 
+**Trends:** 
+- Steelhead salmon counts are the highest among the three salmon groups observed. Steelhead decrease in 2003 and 2005, but increase in 2004 and again in 2010 after having relatively constant annual counts from 2005-2009. 
+- Jack Coho have the lowest counts among the three groups.
+- Coho counts are similar to Jack Coho, but counts increase after 2008. 
