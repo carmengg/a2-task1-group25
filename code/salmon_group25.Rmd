@@ -1,11 +1,18 @@
 ---
 title: "salmon_group25"
+<<<<<<< HEAD
 author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
+=======
+author: "Laurel Wee, Cali Pfleger, Carmen Galaz-García"
+>>>>>>> origin
 date: "1/29/2021"
 output: 
   html_document:
     code_folding: hide
+<<<<<<< HEAD
     theme: lumen
+=======
+>>>>>>> origin
 ---
 
 ```{r setup, include=FALSE}
@@ -15,6 +22,10 @@ library(here)
 library(janitor)
 library(tsibble) # time series tibbles
 library(feasts)
+<<<<<<< HEAD
+=======
+library(patchwork)
+>>>>>>> origin
 ```
 
 ### Overview
@@ -24,6 +35,7 @@ library(feasts)
 - map
 
 ## Data Citation
+<<<<<<< HEAD
 
 ```{r, basic data set, warning=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
@@ -40,10 +52,28 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 
 
 ## Willametter Falls fish passage {.tabset}
+=======
+
+```{r, basic data set, warning=FALSE, message=FALSE}
+fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
+  clean_names() %>% 
+  select(date,steelhead,coho,jack_coho) %>% 
+  mutate(date = lubridate::mdy(date)) %>%     # convert to date type
+  rename(jack = jack_coho) %>%                # update column name
+  pivot_longer(cols = steelhead:jack,         # convert to tidy data
+               names_to="fish_type", 
+               values_to = "n_crossing") %>% 
+  as_tsibble(key=fish_type, index= date)           # convert date into tsibble
+```
+
+
+## Willamette Falls fish passage {.tabset}
+>>>>>>> origin
 
 
 ### Original time series
 ```{r, tab 1}
+<<<<<<< HEAD
 fish_time <- fish %>% 
   mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
   group_by(fish_type)
@@ -73,3 +103,79 @@ ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
 
 ```
 
+=======
+
+```
+
+### Seasonplots
+```{r, tab 2, out.width="100%"}
+
+basic_seasonplot <- function(fish_data, fish_type_str){
+ 
+  month_fish_plot <- fish_data %>% 
+    filter(fish_type == fish_type_str) %>%  
+    index_by(yr_mo = ~yearweek(.)) %>% # group by year and month
+    summarize(monthly_mean_crossings = mean(n_crossing, na.rm=TRUE))  %>% 
+    gg_season(y=monthly_mean_crossings) +
+    labs(x=" ",
+         y="weekly average passage")+
+    theme_light()
+  
+  return(month_fish_plot)
+}
+
+steel_season <- basic_seasonplot(fish, "steelhead")+
+  labs(title = "Graph 1. Adult Steelhead  Passage")
+
+coho_season <- basic_seasonplot(fish, "coho") +
+  labs(title = "Graph 2. \nAdult Coho Passage")
+
+jack_season <- basic_seasonplot(fish, "jack") +
+  labs(title = "Graph 3. \nJack Coho Passage")+
+  labs(y="")
+
+
+
+
+steel_season / (coho_season| jack_season) +
+  plot_layout(guides = "collect") & theme(legend.position = 'right')
+```
+
+**Figure 2.** 
+Average weekly count of three groups of salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
+Graph 1 shows the average weekly passage by year of adult steelhead salmon (*oncorhynchus mykiss*).
+Graphs 2 and 3 show, respectively, the average weekly passage by year of adult and jack coho salmon (*oncorhynchus kisutch*).  
+Data: Columbia River Dart.
+
+**Trends:**
+
+- For adult steelhead salmon we can observe clear seasonaility of the weekly average passage. 
+The  average count increases from December to May/June, then decreases until August/September and remains in less than 100 average crossings until December.
+
+- Both groups of coho salmon have the same seasonality in weekly average passage. Coho salmon seem to only use the fish ladder from August to December regardless of life stage, with crossings increasing from August and peaking in September. 
+
+- Average weekly crossings of adult coho salmon have increased from 2001 to 2010, while passage of adult steelhead salmon has decreased in the same period. 
+
+### Annual counts by species
+```{r, tab 3, fig.align='center',fig.cap= "**Figure 3**. Annual count of Steelhead, Jack coho, and coho salmon passing passing through Willamette Falls fish ladder from 2001 to 2010. Steelhead salmon, *oncorhynchus mykiss*, are shown to have the highest annual counts (blue line).The adult Coho and Jack Coho salmon, *oncorhynchus kisutch*, (red and green line respectively) have lower annual counts than Steelhead, but the adult Coho increase after 2008. Data: Columbia River Dart."}
+fish_annual <- fish %>% 
+  index_by(year = ~year(.)) %>% 
+  group_by(fish_type) %>% 
+  summarize(annual_count = sum(n_crossing, na.rm = TRUE))
+
+ggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+
+  geom_line()+
+  theme_light()+
+  scale_x_continuous(breaks = c(2001:2010))+
+  scale_color_hue(name = "Salmon Species", labels = c("Coho", "Jack Coho", "Steelhead"))+
+  guides(color = guide_legend(reverse = T))+
+  labs(x= "Year", y= "Annual count", title = "Annual counts of Coho, Jack Coho, and Steelhead fish", subtitle = "surveyed from 2001-2010")
+  
+```
+
+
+**Trends:** 
+- Steelhead salmon counts are the highest among the three salmon groups observed. Steelhead decrease in 2003 and 2005, but increase in 2004 and again in 2010 after having relatively constant annual counts from 2005-2009. 
+- Jack Coho have the lowest counts among the three groups.
+- Coho counts are similar to Jack Coho, but counts increase after 2008. 
+>>>>>>> origin
