@@ -91,8 +91,6 @@ jack_season <- basic_seasonplot(fish, "jack") +
   labs(y="")
 
 
-
-
 steel_season / (coho_season| jack_season) +
   plot_layout(guides = "collect") & theme(legend.position = 'right')
 ```
