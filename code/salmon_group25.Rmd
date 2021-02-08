@@ -1,10 +1,13 @@
 ---
 title: "salmon_group25"
-author: "Laurel Wee, Cali Pfleger, Carmen Galaz-García"
+author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
 date: "1/29/2021"
 output: 
   html_document:
     code_folding: hide
+    theme: lumen
+
+
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +17,9 @@ library(here)
 library(janitor)
 library(tsibble) # time series tibbles
 library(feasts)
+
 library(patchwork)
+
 ```
 
 ### Overview
@@ -25,6 +30,7 @@ library(patchwork)
 
 ## Data Citation
 
+
 ```{r, basic data set, warning=FALSE, message=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
@@ -34,15 +40,28 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
   pivot_longer(cols = steelhead:jack,         # convert to tidy data
                names_to="fish_type", 
                values_to = "n_crossing") %>% 
-  as_tsibble(key=fish_type, index= date)           # convert date into tsibble
-```
+  as_tsibble(key=fish_type, index= date)   # convert date into tsibble
 
+```
 
 ## Willamette Falls fish passage {.tabset}
 
 
 ### Original time series
 ```{r, tab 1}
+
+fish_time <- fish %>% 
+  mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
+  group_by(fish_type)
+  
+ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
+  geom_line(aes(color = fish_type)) +
+  facet_wrap(~fish_type) +
+  theme_light()+ 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(title = "Willamette Falls Fish Passages 2002-2010") +
+        xlab("Date") +
+        ylab("Counts of Adult Salmon Passage") 
 
 ```
 
@@ -97,6 +116,7 @@ The  average count increases from December to May/June, then decreases until Aug
 
 ### Annual counts by species
 ```{r, tab 3, out.width="100%",fig.cap= "**Figure 3**. Annual count of Steelhead, jack Coho, and coho salmon passing passing through Willamette Falls fish ladder from 2001 to 2010. Steelhead salmon, *Oncorhynchus mykiss*, are shown to have the highest annual counts (blue line).The adult Coho and jack Coho salmon, *Oncorhynchus kisutch*, (red and green line respectively) have lower annual counts than Steelhead, but the adult Coho increase after 2008. Data: Columbia River Dart."}
+
 # Make a subset of the fish dataframe for annual passage counts
 fish_annual <- fish %>% 
   index_by(year = ~year(.)) %>% 
@@ -124,3 +144,4 @@ ggplot(data = fish_annual,aes(x=year,y=annual_count, color=fish_type))+
 - Jack Coho have the lowest counts among the three groups.
 
 - Coho counts are similar to Jack Coho, but counts increase after 2008. 
+
