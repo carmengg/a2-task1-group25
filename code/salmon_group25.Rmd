@@ -1,10 +1,11 @@
 ---
 title: "salmon_group25"
-author: "Laurel Wee, Cali Pfleger, Carmen Galaz-García"
+author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
 date: "1/29/2021"
 output: 
   html_document:
     code_folding: hide
+    theme: lumen
 ---
 
 ```{r setup, include=FALSE}
@@ -25,6 +26,7 @@ library(patchwork)
 
 ## Data Citation
 
+
 ```{r, basic data set, warning=FALSE, message=FALSE}
 fish <- read_csv(here("data","willamette_fish_passage.csv")) %>% 
   clean_names() %>% 
@@ -43,8 +45,22 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 
 ### Original time series
 ```{r, tab 1}
+fish_time <- fish %>% 
+  mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
+  group_by(fish_type)
+  
+ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
+  geom_line(aes(color = fish_type)) +
+  facet_wrap(~fish_type) +
+  theme_light()+ 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(title = "Willamette Falls Fish Passages 2002-2010") +
+        xlab("Date") +
+        ylab("Counts of Adult Salmon Passage") 
 
 ```
+
+
 
 ### Seasonplots
 ```{r, tab 2, out.width="100%"}
@@ -72,8 +88,6 @@ coho_season <- basic_seasonplot(fish, "coho") +
 jack_season <- basic_seasonplot(fish, "jack") +
   labs(title = "Graph 3. \nJack Coho Passage")+
   labs(y="")
-
-
 
 
 steel_season / (coho_season| jack_season) +
