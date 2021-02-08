@@ -40,7 +40,8 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 
 ```
 
-## Willamette Falls fish passage {.tabset}
+
+## Willametter Falls fish passage {.tabset}
 
 
 ### Original time series
@@ -58,20 +59,8 @@ ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
         xlab("Date") +
         ylab("Counts of Adult Salmon Passage") 
 
-fish_time <- fish %>% 
-  mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
-  group_by(fish_type)
-  
-ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
-  geom_line(aes(color = fish_type)) +
-  facet_wrap(~fish_type) +
-  theme_light()+ 
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(title = "Willamette Falls Fish Passages 2002-2010") +
-        xlab("Date") +
-        ylab("Counts of Adult Salmon Passage") 
-
 ```
+
 
 ### Seasonplots
 ```{r, tab 2, out.width="100%", warning=FALSE}
@@ -99,8 +88,6 @@ coho_season <- basic_seasonplot(fish, "coho") +
 jack_season <- basic_seasonplot(fish, "jack") +
   labs(title = "Graph 3. \nJack Coho Passage")+
   labs(y="")
-
-
 
 
 steel_season / (coho_season| jack_season) +
