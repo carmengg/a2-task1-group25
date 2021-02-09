@@ -1,7 +1,6 @@
 ---
-title: "salmon_group25"
+title: "Salmon Group 25"
 author: "Carmen Galaz-García, Cali Pfleger, and Laurel Wee"
-
 date: "1/29/2021"
 output: 
   html_document:
@@ -20,19 +19,16 @@ library(patchwork)
 ```
 
 ### Overview
-#### Summary
-This summary explores adult fish passage recorded from January 2001 to December 2012 at the Willamette Falls fish ladder on the Willamette River (Oregon). Data were shared by and accessed from Columbia River DART (Data Access in Real Time). 
+This report explores adult salmon passage recorded from January 2001 to December 2012 at the Willamette Falls fish ladder on the Willamette River (Oregon). In this report, trends in passages for Coho, Jack Coho, and Steelhead salmon are explored using time series, seasonplots and annual counts. Data were shared by and accessed from Columbia Basin Research DART Adult Passage Graphics & Text | Columbia Basin Research, Columbia Basin Research School of Aquatic & Fishery Sciences University of Washington, www.cbr.washington.edu/dart/query/adult_graph_text, 2021. 
 
 
-## Data Citation
-
-Looking towards tailspar from yarder at Willamette Falls. Source: (Forest Engineering Inc., Copyright, 1996)
+## Looking towards tailspar from yarder at Willamette Falls. 
+Source: Forest Engineering Inc., Copyright, 1996
 ![Looking towards tailspar from yarder at Willamette Falls](fish.png)
 
-Map of Willamette Falls. Source: Portland District, U.S. Army Corps of Engineers, 2021. 
+## Map of Willamette Falls. 
+Source: Portland District, U.S. Army Corps of Engineers, 2021. 
 ![Looking towards tailspar from yarder at Willamette Falls](map.png)
-
-## Data Citation
 
 
 ## Willametter Falls fish passage {.tabset}
@@ -50,15 +46,17 @@ fish <- read_csv(here("data","willamette_fish_passage.csv")) %>%
 ```
 
 
-### Original time series
+### Ttime Series
 ```{r, tab 1, out.width="100%"}
 fish_time <- fish %>% 
   mutate(n_crossing = replace_na(n_crossing, 0)) %>% 
-  group_by(fish_type)
+  mutate(Species = (fish_type)) %>% 
+  group_by(Species)
   
 ggplot(data = fish_time, aes(x = date, y = n_crossing))  +
-  geom_line(aes(color = fish_type)) +
-  facet_wrap(~fish_type) +
+  geom_line(aes(color = Species)) +
+  facet_wrap(~Species) +
+  scale_color_hue(labels = c("Coho", "Jack Coho", "Steelhead"))+
   theme_light()+ 
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(title = "Willamette Falls Fish Passages 2001-2010") +
@@ -76,8 +74,9 @@ Data: Columbia River DART.
 
 - Adult coho salmon have steadily increasing counts from 2009 onward. 
 - There does not seem to be an increase in yearly counts of adult coho and steelhead salmon passing through the Willamette Falls fish ladder from 2001 to 2010. 
+
 ### Seasonplots
-```{r, tab 2, out.width="100%", warning=FALSE}
+```{r, tab 2, out.width="100%", warning=FALSE }
 
 basic_seasonplot <- function(fish_data, fish_type_str){
  
@@ -124,7 +123,7 @@ The  average count increases from December to May/June, then decreases until Aug
 - Average weekly crossings of adult Coho salmon have increased from 2001 to 2010, while passage of adult Steelhead salmon has decreased in the same period. 
 
 ### Annual counts by species
-```{r, tab 3, out.width="100%",fig.cap= "**Figure 3**. Annual count of Steelhead, jack Coho, and coho salmon passing passing through Willamette Falls fish ladder from 2001 to 2010. Steelhead salmon, *Oncorhynchus mykiss*, are shown to have the highest annual counts (blue line).The adult Coho and jack Coho salmon, *Oncorhynchus kisutch*, (red and green line respectively) have lower annual counts than Steelhead, but the adult Coho increase after 2008. Data: Columbia River Dart."}
+```{r, tab 3, out.width="100%" ,fig.cap= "**Figure 3**. Annual count of Steelhead, jack Coho, and coho salmon passing passing through Willamette Falls fish ladder from 2001 to 2010. Steelhead salmon, *Oncorhynchus mykiss*, are shown to have the highest annual counts (blue line).The adult Coho and jack Coho salmon, *Oncorhynchus kisutch*, (red and green line respectively) have lower annual counts than Steelhead, but the adult Coho increase after 2008. Data: Columbia River Dart."}
 
 # Make a subset of the fish dataframe for annual passage counts
 fish_annual <- fish %>% 
